@@ -9,7 +9,11 @@ export class Cookie {
 
   get() {
     try {
-      return JSON.parse(cookie.get(this.key));
+      const tokens = cookie.get(this.key);
+      if (!tokens) {
+        throw new Error("No Token");
+      }
+      return JSON.parse(tokens);
     } catch (e) {
       return undefined;
     }
