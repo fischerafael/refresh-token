@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { AuthServices } from "../config/api";
 import { Cookie } from "../utils/cookie";
 
@@ -27,6 +27,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const [state, setState] = useState<IState>(INITIAL_STATE);
 
+  console.log("TOKENS STATE - ", state);
+
   const logIn = async (email: string, password: string) => {
     try {
       const { access, refresh } = await authService.login(email, password);
@@ -43,6 +45,17 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     cookie.delete();
     push("/");
   };
+
+  useEffect(() => {
+    const tokens = cookie.get();
+
+    if (!tokens?.access) {
+      logOut();
+      return;
+    }
+
+    setState(tokens);
+  }, [state.access]);
 
   return (
     <AuthContext.Provider

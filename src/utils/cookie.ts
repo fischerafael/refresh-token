@@ -9,7 +9,7 @@ export class Cookie {
 
   get() {
     try {
-      return cookie.get(this.key);
+      return JSON.parse(cookie.get(this.key));
     } catch (e) {
       return undefined;
     }
