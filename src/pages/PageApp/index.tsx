@@ -1,8 +1,13 @@
 import { useAuth } from "@/src/hooks/useAuth";
+import { useTask } from "@/src/hooks/useTask";
 import React from "react";
 
 export const PageApp = () => {
-  const { methods } = useAuth();
+  const { methods, state } = useAuth();
+
+  const { data } = useTask(state.access);
+
+  console.log(data);
 
   const handleLogOut = () => {
     methods.logOut();

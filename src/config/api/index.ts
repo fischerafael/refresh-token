@@ -32,3 +32,14 @@ export class AuthServices {
     return data;
   }
 }
+
+export class TaskServices {
+  async get(access: string) {
+    const { data } = await api.get<{ message: string }>(`/task`, {
+      headers: {
+        ["Authorization"]: `Bearer ${access}`,
+      },
+    });
+    return data;
+  }
+}
