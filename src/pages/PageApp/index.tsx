@@ -1,5 +1,6 @@
 import { useAuth } from "@/src/hooks/useAuth";
 import { useTask } from "@/src/hooks/useTask";
+import { JWT } from "@/src/utils/jwt";
 import React from "react";
 
 export const PageApp = () => {
@@ -21,3 +22,5 @@ export const PageApp = () => {
     </div>
   );
 };
+
+const jwt = new JWT();

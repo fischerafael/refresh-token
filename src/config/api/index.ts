@@ -1,8 +1,29 @@
+import { Cookie } from "@/src/utils/cookie";
+import { JWT } from "@/src/utils/jwt";
 import axios from "axios";
 
 export const api = axios.create({
   baseURL: `http://localhost:3000/api`,
 });
+
+api.interceptors.request.use(
+  async (req) => {
+    const token = tokens.get();
+    const accesToken = token?.access;
+    const refreshToken = token?.refresh;
+    if (!accesToken || !refreshToken) throw new Error();
+
+    const res = await authServices.refresh(refreshToken);
+
+    console.log("OLD ACCESS", token?.access);
+    console.log("OLD ACCESS STATUS IS EXPIRED", jwt.isExpired(token.access));
+
+    console.log("NEW ACCESS", res?.access);
+    console.log("OLD ACCESS STATUS IS EXPIRED", jwt.isExpired(res?.access));
+    return req;
+  },
+  (err) => err
+);
 
 export class AuthServices {
   async login(
@@ -43,3 +64,7 @@ export class TaskServices {
     return data;
   }
 }
+
+const jwt = new JWT();
+const tokens = new Cookie("@refresh-token-app");
+const authServices = new AuthServices();

@@ -7,13 +7,13 @@ export class Cookie {
     cookie.set(this.key, JSON.stringify(value));
   }
 
-  get() {
+  get<T = { access: string; refresh: string }>() {
     try {
       const tokens = cookie.get(this.key);
       if (!tokens) {
         throw new Error("No Token");
       }
-      return JSON.parse(tokens);
+      return JSON.parse(tokens) as T;
     } catch (e) {
       return undefined;
     }
