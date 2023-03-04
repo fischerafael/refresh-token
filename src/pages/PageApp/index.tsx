@@ -5,9 +5,10 @@ import React from "react";
 export const PageApp = () => {
   const { methods, state } = useAuth();
 
-  const { data } = useTask(state.access);
+  const { data: firstCallData } = useTask(state.access);
+  const { data: secondCallData } = useTask(state.access, "secondCall");
 
-  console.log(data);
+  console.log(firstCallData, secondCallData);
 
   const handleLogOut = () => {
     methods.logOut();
